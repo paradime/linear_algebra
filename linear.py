@@ -1,16 +1,12 @@
 from fractions import Fraction
 
 def scale(scalar, row):
-  newRow = []
-  for e in row:
-    newRow.append(e * scalar)
-  return newRow
+  return list(map(lambda x: x * scalar, row))
 
 def addRow(row1, row2):
-  newRow = []
-  for i in range(0, len(row1)):
-    newRow.append(row1[i] + row2[i])
-  return newRow
+  return list(map(lambda i: 
+    row1[i] + row2[i], range(0, len(row1))
+  ))
 
 def height(matrix):
   return len(matrix)
@@ -22,10 +18,7 @@ def pivotEntry(rowNum, matrix):
   return matrix[rowNum][rowNum]
 
 def newEmptyMatrix(matrix):
-  newMatrix = []
-  for _ in matrix:
-    newMatrix.append([])
-  return newMatrix
+  return list(map(lambda _: [], matrix))
 
 def rref(matrix):
   newMatrix = matrix
@@ -144,29 +137,8 @@ print("~~1~~")
 
 
 print("~~2~~")
-matrix = [
-  [-3,1,2],
-  [2,-2,0],
-  [1,4,-4]
-]
-print(ruleOfSarrus(matrix))
-
 
 print("~~3~~")
-
-matrix = [
-  [1,5,-1],
-  [-1,1,3],
-  [1,3,-2]
-]
-print(ruleOfSarrus(matrix))
-matrix = [
-  [1,5,-1],
-  [3,-2,2],
-  [-1,1,3]
-]
-print(-2*ruleOfSarrus(matrix))
-
 matrix = [
   [1,5,0,-1],
   [3,-2,-1,2],
