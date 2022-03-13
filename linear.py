@@ -69,3 +69,76 @@ def identityMatrix(height):
 
 def inverseOfMatrix(matrix):
   return rref(augmentMatrix(matrix, identityMatrix(height(matrix))))
+
+def dotProdSimp(row, col):
+  val = 0
+  for i in range(0, len(row)):
+    val += row[i]*col[i]
+  return val
+
+def dotProd(m1, m2):
+  newMatrix = []
+  for row in m1:
+    for i in range(0, width(m2)):
+      newMatrix.append([dotProdSimp(row, columnAt(i, m2))])
+  return newMatrix
+
+def columnAt(index, matrix):
+  column= []
+  for row in matrix:
+    column.append(row[index])
+  return column
+
+def scaleMatrix(scalar, matrix):
+  newMatrix = []
+  for row in matrix:
+    newMatrix.append(scale(scalar, row))
+  return newMatrix
+
+def determinateOf2By2(matrix):
+  return (matrix[0][0]*matrix[1][1]) - (matrix[1][0]*matrix[0][1])
+
+def inverseOf2By2(matrix):
+  return scaleMatrix((1/determinateOf2By2(matrix)), specialFlip2By2(matrix))
+
+def specialFlip2By2(matrix):
+  return [
+    [matrix[1][1], -matrix[0][1]],
+    [-matrix[1][0], matrix[0][0]],
+  ]
+
+print("~~1~~")
+matrix = [
+  [3, 12],
+  [-2, 6]
+]
+matrixInverse = inverseOf2By2(matrix)
+b = [
+  [51],
+  [-6]
+]
+printMatrix(dotProd(matrixInverse, b))
+
+print("~~2~~")
+matrix = [
+  [-5, 1],
+  [3, 8]
+]
+matrixInverse = inverseOf2By2(matrix)
+b = [
+  [-15],
+  [95]
+]
+printMatrix(dotProd(matrixInverse, b))
+
+print("~~3~~")
+matrix = [
+  [4, 8],
+  [-12, -3]
+]
+matrixInverse = inverseOf2By2(matrix)
+b = [
+  [-20],
+  [-66]
+]
+printMatrix(dotProd(matrixInverse, b))
