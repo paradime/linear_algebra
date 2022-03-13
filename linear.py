@@ -107,38 +107,70 @@ def specialFlip2By2(matrix):
     [-matrix[1][0], matrix[0][0]],
   ]
 
+def ruleOfSarrus(matrix):
+  augMatrix = list(map(lambda row: row[0:2], matrix))
+  newMatrix = augmentMatrix(matrix, augMatrix)
+  valsToSum = []
+  for i in range(0, 3):
+    #diagonal down
+    valsToSum.append(
+      newMatrix[0][i] *
+      newMatrix[1][i+1] *
+      newMatrix[2][i+2]
+    )
+    #diagonal up
+    valsToSum.append(-1 * 
+      newMatrix[2][i] *
+      newMatrix[1][i+1] *
+      newMatrix[0][i+2]
+    )
+  return sum(valsToSum)
+    
+def determinateOf4By4(matrix):
+  valsToSum = []
+  for i in range(0,height(matrix)):
+    sign = 1 if i % 2 == 0 else -1
+    matrixToSarrus = []
+    for j in range(0, height(matrix)):
+      if(i == j):
+        continue
+      matrixToSarrus.append(matrix[j][1:])
+    valsToSum.append(sign*matrix[i][0]*ruleOfSarrus(matrixToSarrus))
+  return sum(valsToSum)
+
+    
+
 print("~~1~~")
-matrix = [
-  [3, 12],
-  [-2, 6]
-]
-matrixInverse = inverseOf2By2(matrix)
-b = [
-  [51],
-  [-6]
-]
-printMatrix(dotProd(matrixInverse, b))
+
 
 print("~~2~~")
 matrix = [
-  [-5, 1],
-  [3, 8]
+  [-3,1,2],
+  [2,-2,0],
+  [1,4,-4]
 ]
-matrixInverse = inverseOf2By2(matrix)
-b = [
-  [-15],
-  [95]
-]
-printMatrix(dotProd(matrixInverse, b))
+print(ruleOfSarrus(matrix))
+
 
 print("~~3~~")
+
 matrix = [
-  [4, 8],
-  [-12, -3]
+  [1,5,-1],
+  [-1,1,3],
+  [1,3,-2]
 ]
-matrixInverse = inverseOf2By2(matrix)
-b = [
-  [-20],
-  [-66]
+print(ruleOfSarrus(matrix))
+matrix = [
+  [1,5,-1],
+  [3,-2,2],
+  [-1,1,3]
 ]
-printMatrix(dotProd(matrixInverse, b))
+print(-2*ruleOfSarrus(matrix))
+
+matrix = [
+  [1,5,0,-1],
+  [3,-2,-1,2],
+  [-1,1,0,3],
+  [1,3,2,-2]
+]
+print(determinateOf4By4(matrix))
