@@ -27,6 +27,8 @@ def rref(matrix):
       return newMatrix
     tempMatrix = newEmptyMatrix(matrix)
     pivotRowNum = i
+    if(pivotEntry(i, newMatrix) == 0):
+      return newMatrix
     pivotRow = scale(1/pivotEntry(i, newMatrix), newMatrix[pivotRowNum])
     tempMatrix[i] = pivotRow
     for j in range(0, height(matrix)):
@@ -154,38 +156,64 @@ def addMatrix(m1, m2):
     newMatrix.append(addRow(m1[i], m2[i]))
   return newMatrix
 
+def projectionMatrix(matrix):
+  return dotProd(
+    dotProd(
+      matrix, 
+      inverseOfMatrix(dotProd(transpose(matrix), matrix))
+    ), 
+    transpose(matrix)
+  )
+def leastSquares(matrix, b):
+  tOfM = transpose(matrix)
+  ref = rref(
+    augmentMatrix(
+      dotProd(tOfM,matrix),
+      dotProd(tOfM,b)
+    )
+  )
+  newMatrix = []
+  for row in ref:
+    newMatrix.append([row[-1]])
+  return newMatrix
 
 print("~~1~~")
 m1 = [
-  [1,-3],
-  [0,1],
-  [4,0]
+  [1,-2],
+  [3, 1],
+  [-1,-2]
 ]
-m2 = transpose(m1)
-printMatrix(m2)
-print("--")
-printMatrix(rref(m2))
+b = [
+  [5],
+  [-6],
+  [-2]
+]
+printMatrix(leastSquares(m1, b))
 
 
 print("~~2~~")
 
 m1 = [
-  [2,-2,1,0],
-  [1,3,-3,-2],
-  [0,0,4,-4]
+  [3,-2],
+  [1,-5],
+  [1,1]
 ]
-m2 = transpose(m1)
-printMatrix(m2)
-print("--")
-printMatrix(rref(m2))
+b = [
+  [-6],
+  [-5],
+  [4]
+]
+printMatrix(leastSquares(m1, b))
 
 print("~~3~~")
 m1 = [
-  [-1,5,0],
-  [1,-2,3],
-  [0,0,-4]
+  [1,2],
+  [1,-1],
+  [0,1]
 ]
-m2 = transpose(m1)
-printMatrix(m2)
-print("--")
-printMatrix(rref(m2))
+b = [
+  [-4],
+  [3],
+  [2]
+]
+printMatrix(leastSquares(m1, b))
