@@ -164,6 +164,7 @@ def projectionMatrix(matrix):
     ), 
     transpose(matrix)
   )
+
 def leastSquares(matrix, b):
   tOfM = transpose(matrix)
   ref = rref(
@@ -177,43 +178,66 @@ def leastSquares(matrix, b):
     newMatrix.append([row[-1]])
   return newMatrix
 
-print("~~1~~")
-m1 = [
-  [1,-2],
-  [3, 1],
-  [-1,-2]
-]
-b = [
-  [5],
-  [-6],
-  [-2]
-]
-printMatrix(leastSquares(m1, b))
+# C^-1 . vector
+def transformToNewBasis(basisMatrix, vectorMatrix):
+  return dotProd(inverseOfMatrix(basisMatrix), vectorMatrix)
 
+# in: A, C
+# out: M
+def transMatrixInBasis(transMatrix, basisMatrix):
+  return dotProd(
+    dotProd(
+      inverseOfMatrix(basisMatrix),
+      transMatrix
+    ),
+    basisMatrix
+  )
+
+# in: A, C, [v](in new basis)
+# out: [T(x)] (in new basis)
+def transformVectorInBasis(transMatrix, basisMatrix, vectorMatrix):
+  return dotProd(
+    transMatrixInBasis(transMatrix, basisMatrix),
+    vectorMatrix
+  )
+print("~~1~~")
+transMatrix = [ #A
+  [-2,-2,1],
+  [1,0,-2],
+  [0,1,0]
+]
+basisMatrix = [ #C
+  [1,0,2],
+  [-1,1,1],
+  [1,-1,-2]
+]
+vector = transpose([[5,4,-2]])
+printMatrix(transformVectorInBasis(transMatrix, basisMatrix, vector))
 
 print("~~2~~")
-
-m1 = [
-  [3,-2],
-  [1,-5],
-  [1,1]
+transMatrix = [ #A
+  [-2,-5],
+  [3,1],
 ]
-b = [
-  [-6],
-  [-5],
-  [4]
+basisMatrix = [ #C
+  [2,-6],
+  [1,-2],
 ]
-printMatrix(leastSquares(m1, b))
+vector = transpose([[2,-2]])
+printMatrix(transformVectorInBasis(
+  transMatrix, 
+  basisMatrix, 
+  transformToNewBasis(basisMatrix, vector)
+))
 
 print("~~3~~")
-m1 = [
-  [1,2],
-  [1,-1],
-  [0,1]
+transMatrix = [ #A
+  [-1, 3],
+  [2,1],
 ]
-b = [
-  [-4],
-  [3],
-  [2]
+basisMatrix = [ #C
+  [-4,4],
+  [4,0]
 ]
-printMatrix(leastSquares(m1, b))
+vector = transpose([[2,3]])
+printMatrix(transformVectorInBasis(transMatrix, basisMatrix, vector))
