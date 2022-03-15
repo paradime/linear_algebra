@@ -23,6 +23,8 @@ def newEmptyMatrix(matrix):
 def rref(matrix):
   newMatrix = matrix
   for i in range(0, height(matrix)):
+    if(i>= width(matrix)):
+      return newMatrix
     tempMatrix = newEmptyMatrix(matrix)
     pivotRowNum = i
     pivotRow = scale(1/pivotEntry(i, newMatrix), newMatrix[pivotRowNum])
@@ -61,7 +63,12 @@ def identityMatrix(height):
   return newMatrix
 
 def inverseOfMatrix(matrix):
-  return rref(augmentMatrix(matrix, identityMatrix(height(matrix))))
+  rrefForm = rref(augmentMatrix(matrix, identityMatrix(height(matrix))))
+  newMatrix = []
+  for row in rrefForm:
+    newMatrix.append(row[width(matrix):])
+  return newMatrix
+
 
 def dotProdSimp(row, col):
   val = 0
@@ -71,9 +78,10 @@ def dotProdSimp(row, col):
 
 def dotProd(m1, m2):
   newMatrix = []
-  for row in m1:
-    for i in range(0, width(m2)):
-      newMatrix.append([dotProdSimp(row, columnAt(i, m2))])
+  for i in range(0, height(m1)):
+    newMatrix.append([])
+    for j in range(0, width(m2)):
+      newMatrix[i].append(dotProdSimp(m1[i], columnAt(j, m2)))
   return newMatrix
 
 def columnAt(index, matrix):
@@ -131,18 +139,53 @@ def determinateOf4By4(matrix):
     valsToSum.append(sign*matrix[i][0]*ruleOfSarrus(matrixToSarrus))
   return sum(valsToSum)
 
+def transpose(matrix):
+  newMatrix = []
+  for i in range(0, width(matrix)):
+    newRow = []
+    for row in matrix:
+      newRow.append(row[i])
+    newMatrix.append(newRow)
+  return newMatrix
     
+def addMatrix(m1, m2):
+  newMatrix = []
+  for i in range(0, height(m1)):
+    newMatrix.append(addRow(m1[i], m2[i]))
+  return newMatrix
+
 
 print("~~1~~")
+m1 = [
+  [1,-3],
+  [0,1],
+  [4,0]
+]
+m2 = transpose(m1)
+printMatrix(m2)
+print("--")
+printMatrix(rref(m2))
 
 
 print("~~2~~")
 
-print("~~3~~")
-matrix = [
-  [1,5,0,-1],
-  [3,-2,-1,2],
-  [-1,1,0,3],
-  [1,3,2,-2]
+m1 = [
+  [2,-2,1,0],
+  [1,3,-3,-2],
+  [0,0,4,-4]
 ]
-print(determinateOf4By4(matrix))
+m2 = transpose(m1)
+printMatrix(m2)
+print("--")
+printMatrix(rref(m2))
+
+print("~~3~~")
+m1 = [
+  [-1,5,0],
+  [1,-2,3],
+  [0,0,-4]
+]
+m2 = transpose(m1)
+printMatrix(m2)
+print("--")
+printMatrix(rref(m2))
